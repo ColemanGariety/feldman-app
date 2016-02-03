@@ -1,0 +1,16 @@
+{
+  "name": "feldman-app",
+  "version": "0.0.1",
+  "description": "notation for real musicians",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.36.0"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  }
+}
