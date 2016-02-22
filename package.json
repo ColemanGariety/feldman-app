@@ -10,7 +10,6 @@
     "electron-prebuilt": "^0.36.0"
   },
   "dependencies": {
-    "midi": "git://github.com/mudcube/MIDI.js.git",
     "react": "^0.14.7",
     "react-dom": "^0.14.7"
   }
