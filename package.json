@@ -10,8 +10,14 @@
     "electron-prebuilt": "^0.36.0"
   },
   "dependencies": {
-    "midi": "git://github.com/mudcube/MIDI.js.git",
+    "baconjs": "^0.7.83",
+    "easymidi": "0.0.2",
+    "midi": "^0.9.4",
+    "midifile": "^1.0.4",
+    "midiguchi": "^0.3.0",
+    "midiplayer": "^1.0.0",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "require-all": "^2.0.0"
   }
 }

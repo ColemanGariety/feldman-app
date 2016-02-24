@@ -1,81 +1,59 @@
-const React = require('react')
-const ReactDOM = require('react-dom')
-const render = ReactDOM.render
-
-
-
+var React = require('react')
+var ReactDOM = require('react-dom')
+var render = ReactDOM.render
+var fs = require('original-fs')
+var path = require('path')
+var recursive = require('recursive-readdir')
+var MIDIPlayer = require('midiplayer')
+var MIDIFile = require('midifile')
+var outputs = []
 
 render(React.createElement('div', {}, 'this is just a <div> tag rendered in React. you can open command line with ALT+COMMAND+I!'), document.body.firstElementChild)
 
-var midiAccess;
-var midiPlayer;
-var outputs;
 // Requesting Midi Access
 navigator.requestMIDIAccess().then(function onsuccesscallback(access) {
-  outputs = access.outputs;
-  var iter = outputs.values();
-  var output;
-  while(output = iter.next()) {
-    if(output.done) {
+  var iter = access.outputs.values()
+  while (output = iter.next()) {
+    if (output.done) {
       break;
     }
-    var opt = document.createElement('option');
-    opt.value = output.value.id;
-    opt.text = output.value.name;
-    document.getElementById('inputportselector').add(opt);
+    outputs.push(output.value)
   }
+  
+    // play demo.mid!
+    fs.readFile(path.join(__dirname, 'demo.mid'), function (err, data) {
+        playFile(data.buffer, output)
+    })
+
 },function onerrorcallback(err) {
   console.log('uh-oh! Something went wrong!  Error code: ' + err.code);
 });
 
-// File handlers
-function readFile(input) {
-	var reader = new FileReader();
-	reader.readAsArrayBuffer(input.files[0]);
-	reader.onloadend = function(event) {
-		playFile(event.target.result);
-	}
-}
-function downloadFile(input) {
-	if(!input.value)
-		return;
-	var oReq = new XMLHttpRequest();
-	oReq.open('GET', 'http://github.com/nfroidure/MIDIFile/master/sounds/' + input.value, true);
-	oReq.responseType = 'arraybuffer';
-	oReq.onload = function(oEvent) {
-		playFile(oReq.response);
-	};
-	oReq.send(null);
-}
-
 // Player
 function playFile(buffer) {
 	var outputKeys = [];
-	// testing output
-	if(outputs) {
-		// Stopping previous play if exists
-		if(midiPlayer) {
-			midiPlayer.stop();
-		}
 
+	// testing output
+	if(outputs.length) {
 		// Creating player
-		midiPlayer = new MIDIPlayer({output: outputs.get(
-		  document.getElementById('inputportselector').value
-		)});
+		var midiPlayer = new MIDIPlayer({ output: outputs[0] });
 
 		// creating the MidiFile instance from a buffer (view MIDIFile README)
-		midiFile = new MIDIFile(buffer);
+		var midiFile = new MIDIFile(buffer);
 		midiPlayer.load(midiFile);
+
+    console.log(midiFile)
 
 		// Playing
 		midiPlayer.play(function() {
 			console.log('Play ended.');
 		});
+
+    midiPlayer.volume = 80
+
 		console.log('Playing.');
 
 	} else {
 		console.log('No access to MIDI output.');
 	}
 }
-
-playFile('./demo.mid');
