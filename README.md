@@ -24,3 +24,7 @@ here's an inventory of "stuff we need to find first":
 - [x] an open source alternative to garritan instruments for playback. MIDIjs seems to have a bunch of options (http://galacticmilk.com/midi-js/) - abc.js looks interesting (https://github.com/paulrosen/abcjs) - blog post on midi/browser problems (http://abcnotation.com/blog/2013/04/10/the-problem-with-midi/) NOTE: we can use Apple's built-in synth via SimpleSynth for now!
 - [ ] Run SimpleSynth or alternative as a background process when the app launches and end it when feldman quits
 - [ ] setup Gulp to compile JSX files with gulp-nodemon and gulp-react
+
+All SimpleSynth does is pair soundfonts with the MIDI data that it receives from Feldman's MIDIPlayer instance.
+
+My suggestion is that we compile it with emscripten so that it runs at the node level of the app (that is, not within Electron, but still in Feldman). It'll be fast and self-contained; no extra processes, etc.
